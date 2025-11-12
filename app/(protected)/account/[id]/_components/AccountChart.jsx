@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import toast from "react-hot-toast";
 
 const DATE_RANGES = {
   "7D": { label: "Last 7 Days", days: 7 },
@@ -39,13 +40,15 @@ export function AccountChart({ transactions = [] }) {
       ? startOfDay(subDays(now, range.days))
       : startOfDay(new Date(0));
 
-    // ✅ Use real transactions (from props)
     const filtered = transactions.filter((t) => {
       const date = new Date(t.date);
       return date >= startDate && date <= endOfDay(now);
     });
 
-    // ✅ Convert Decimal128 to number safely
+    if (filtered.length === 0) {
+      toast("No transactions found for this range", { icon: "ℹ️" });
+    }
+
     const grouped = filtered.reduce((acc, t) => {
       const date = format(new Date(t.date), "MMM dd");
       const amount =
@@ -82,7 +85,13 @@ export function AccountChart({ transactions = [] }) {
           Transaction Overview
         </CardTitle>
 
-        <Select value={dateRange} onValueChange={setDateRange}>
+        <Select
+          value={dateRange}
+          onValueChange={(v) => {
+            setDateRange(v);
+            toast.success(`Showing ${DATE_RANGES[v].label}`);
+          }}
+        >
           <SelectTrigger className="w-[140px]">
             <SelectValue placeholder="Select range" />
           </SelectTrigger>
@@ -101,13 +110,13 @@ export function AccountChart({ transactions = [] }) {
           <div className="text-center">
             <p className="text-muted-foreground">Total Income</p>
             <p className="text-lg font-bold text-green-500">
-              ${totals.income.toFixed(2)}
+              ₹{totals.income.toFixed(2)}
             </p>
           </div>
           <div className="text-center">
             <p className="text-muted-foreground">Total Expenses</p>
             <p className="text-lg font-bold text-red-500">
-              ${totals.expense.toFixed(2)}
+              ₹{totals.expense.toFixed(2)}
             </p>
           </div>
           <div className="text-center">
@@ -119,7 +128,7 @@ export function AccountChart({ transactions = [] }) {
                   : "text-red-500"
               }`}
             >
-              ${(totals.income - totals.expense).toFixed(2)}
+              ₹{(totals.income - totals.expense).toFixed(2)}
             </p>
           </div>
         </div>

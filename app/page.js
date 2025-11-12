@@ -10,7 +10,6 @@ import { connectDB } from "@/lib/connectDB";
 
 export default async function Home() {
   return (
-
     <div className="mt-20 ">
       <HeroSection></HeroSection>
       <FeatureSection></FeatureSection>

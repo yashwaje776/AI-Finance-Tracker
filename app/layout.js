@@ -4,6 +4,8 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Providers } from "./providers";
+import { Toaster } from "react-hot-toast";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +32,7 @@ export default async function RootLayout({ children }) {
             <Header></Header>
             <main className="min-h-screen grow">{children}</main>
             <Footer></Footer>
+            <Toaster position="bottom-right" reverseOrder={false} />
           </body>
         </html>
       </Providers>

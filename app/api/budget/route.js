@@ -8,7 +8,6 @@ export async function GET(req) {
     const budgets = await Budget.find().populate("user", "email name");
     return Response.json(budgets);
   } catch (err) {
-    console.error("❌ Error fetching budgets:", err);
     return Response.json({ error: "Server error" }, { status: 500 });
   }
 }
@@ -45,7 +44,7 @@ export async function POST(req) {
     const updatedUser = await User.findById(userId).populate("budgets");
 
     return Response.json({ 
-      message: "✅ Budget saved successfully", 
+      message: " Budget saved successfully", 
       budget, 
       user: updatedUser 
     });

@@ -6,12 +6,9 @@ import { connectDB } from "@/lib/connectDB";
 
 export async function POST(req) {
   try {
-    console.log("🔹 Incoming POST /api/transaction request...");
     await connectDB();
-    console.log("✅ Database connected successfully");
 
     const body = await req.json();
-    console.log("📦 Request body received:", body);
 
     const {
       user,
@@ -26,7 +23,6 @@ export async function POST(req) {
     } = body;
 
     if (!user || !account) {
-      console.warn("⚠️ Missing user or account:", { user, account });
       return NextResponse.json(
         { error: "User and Account are required" },
         { status: 400 }
@@ -34,12 +30,7 @@ export async function POST(req) {
     }
 
     if (!type || !amount || !date || !category) {
-      console.warn("⚠️ Missing required fields:", {
-        type,
-        amount,
-        date,
-        category,
-      });
+     
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -68,7 +59,6 @@ export async function POST(req) {
       nextRecurringDate = d;
     }
 
-    console.log("🧾 Creating new transaction...");
     const newTransaction = await Transaction.create({
       type,
       amount,
@@ -83,9 +73,7 @@ export async function POST(req) {
       account,
     });
 
-    console.log("✅ Transaction created successfully:", newTransaction._id);
-
-    console.log("🔁 Updating user and account transaction lists...");
+    
     await Promise.all([
       User.findByIdAndUpdate(user, {
         $push: { transactions: newTransaction._id },
@@ -95,14 +83,11 @@ export async function POST(req) {
       }),
     ]);
 
-    // 💰 Update account balance
     const userAccount = await Account.findById(account);
     if (!userAccount) {
-      console.error("❌ Account not found for ID:", account);
       return NextResponse.json({ error: "Account not found" }, { status: 404 });
     }
 
-    console.log("💰 Updating account balance. Current:", userAccount.balance);
 
     if (type === "INCOME") {
       userAccount.balance += Number(amount);
@@ -111,12 +96,7 @@ export async function POST(req) {
     }
 
     await userAccount.save();
-    console.log(
-      "✅ Account balance updated successfully:",
-      userAccount.balance
-    );
-
-    // 🎯 Return response
+    
     return NextResponse.json(
       {
         message: "✅ Transaction created and account updated successfully",
@@ -125,7 +105,6 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("❌ Error creating transaction:", error);
     return NextResponse.json(
       { error: error.message || "Failed to create transaction" },
       { status: 500 }
@@ -135,18 +114,14 @@ export async function POST(req) {
 
 export async function GET() {
   try {
-    console.log("🔹 Incoming GET /api/transaction request...");
     await connectDB();
-    console.log("✅ Database connected successfully");
 
     const transactions = await Transaction.find()
       .populate("user account")
       .sort({ date: -1 });
 
-    console.log(`📦 Retrieved ${transactions.length} transactions`);
     return NextResponse.json({ data: transactions });
   } catch (error) {
-    console.error("❌ Error fetching transactions:", error);
     return NextResponse.json(
       { error: error.message || "Failed to fetch transactions" },
       { status: 500 }

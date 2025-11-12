@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux"; // ✅ or your global store hook
+import { useSelector } from "react-redux";
 import { Pencil, Check, X } from "lucide-react";
 import {
   Card,
@@ -13,9 +13,10 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import toast from "react-hot-toast";
 
 export default function BudgetProgress({ initialBudget, currentExpenses }) {
-  const userId =useSelector((state) => state.user.user?._id);
+  const userId = useSelector((state) => state.user.user?._id);
 
   const [budget, setBudget] = useState(initialBudget?.amount || 0);
   const [isEditing, setIsEditing] = useState(false);
@@ -36,12 +37,12 @@ export default function BudgetProgress({ initialBudget, currentExpenses }) {
   const handleUpdateBudget = async () => {
     const amount = parseFloat(newBudget);
     if (isNaN(amount) || amount <= 0) {
-      alert("❌ Please enter a valid amount");
+      toast.error("Please enter a valid amount");
       return;
     }
 
     if (!userId) {
-      alert("⚠️ User ID missing. Please log in first.");
+      toast.error("User ID missing. Please log in first.");
       return;
     }
 
@@ -54,15 +55,13 @@ export default function BudgetProgress({ initialBudget, currentExpenses }) {
       });
 
       const result = await res.json();
-      console.log(result)
       if (!res.ok) throw new Error(result.message || "Failed to update budget");
 
       setBudget(amount);
-      alert("✅ Budget saved successfully!");
+      toast.success("Budget saved successfully!");
       setIsEditing(false);
     } catch (error) {
-      console.error("Error updating budget:", error);
-      alert("❌ Failed to save budget");
+      toast.error("Failed to save budget");
     } finally {
       setIsLoading(false);
     }

@@ -81,7 +81,6 @@ export async function POST(req) {
     });
     
   } catch (error) {
-    console.error("Error creating dummy transactions:", error);
     return NextResponse.json(
       { error: "Failed to create dummy transactions" },
       { status: 500 }

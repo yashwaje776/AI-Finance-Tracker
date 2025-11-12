@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { toast } from "react-hot-toast";
 
 export default function EditTransactionPage() {
   const { id } = useParams();
@@ -31,8 +32,7 @@ export default function EditTransactionPage() {
           throw new Error(data.error || "Failed to load transaction");
         setTransaction(data.data);
       } catch (error) {
-        console.error("Error fetching transaction:", error);
-        alert("❌ Failed to load transaction details.");
+        toast.error("Failed to load transaction details.");
       }
     };
 
@@ -54,11 +54,10 @@ export default function EditTransactionPage() {
       if (!res.ok)
         throw new Error(result.error || "Failed to update transaction");
 
-      alert("✅ Transaction updated successfully!");
+      toast.success("Transaction updated successfully!");
       router.push("/dashboard");
     } catch (error) {
-      console.error(error);
-      alert("❌ " + error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -171,7 +170,6 @@ export default function EditTransactionPage() {
               </Select>
             </div>
 
-            {/* Recurring */}
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium">
                 Recurring Transaction
@@ -184,7 +182,6 @@ export default function EditTransactionPage() {
               />
             </div>
 
-            {/* Recurring Interval */}
             {transaction.isRecurring && (
               <div>
                 <label className="block mb-2 text-sm font-medium">

@@ -6,15 +6,15 @@ export async function GET(req, { params }) {
   try {
     await connectDB();
 
-    const { id } =await params;
+    const { id } = await params;
     if (!id) {
       return new Response(JSON.stringify({ error: "Account ID is required" }), {
         status: 400,
       });
     }
-    console.log("Fetching account with ID:", id);
+
     const account = await Account.findById(id)
-       .populate({
+      .populate({
         path: "transactions",
         options: { sort: { date: -1 } }, 
       })
@@ -39,7 +39,6 @@ export async function GET(req, { params }) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching account:", error);
     return new Response(
       JSON.stringify({ error: "Failed to fetch account info" }),
       { status: 500 }

@@ -37,7 +37,6 @@ export async function POST(req) {
       });
     }
   } catch (error) {
-    console.error("Error in budget upsert API:", error);
     return NextResponse.json(
       { success: false, message: "Server error", error: error.message },
       { status: 500 }

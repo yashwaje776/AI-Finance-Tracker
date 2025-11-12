@@ -8,7 +8,6 @@ export async function GET(request) {
 
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
-    console.log("Fetching accounts for userId:", userId);
 
     if (!userId) {
       return NextResponse.json(
@@ -17,7 +16,7 @@ export async function GET(request) {
       );
     }
 
-    const accounts = await Account.find({ user:userId }).sort({ createdAt: -1 });
+    const accounts = await Account.find({ user: userId }).sort({ createdAt: -1 });
 
     return NextResponse.json({
       success: true,

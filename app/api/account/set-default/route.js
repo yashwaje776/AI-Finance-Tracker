@@ -33,7 +33,6 @@ export async function POST(req) {
       account: updatedAccount,
     });
   } catch (err) {
-    console.error("Error updating default account:", err);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

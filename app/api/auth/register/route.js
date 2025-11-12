@@ -26,7 +26,6 @@ export async function POST(req) {
     ]);
 
     if (user) {
-      console.log("👤 Existing user found:", user._id);
       return NextResponse.json(
         { message: "User already exists", data: user },
         { status: 200 }
@@ -40,14 +39,11 @@ export async function POST(req) {
       imageUrl,
     });
 
-    console.log("🆕 New user created:", user._id);
-
     return NextResponse.json(
       { message: "User created successfully", data: user },
       { status: 201 }
     );
   } catch (error) {
-    console.error("❌ Error in /api/auth/register:", error);
     return NextResponse.json(
       { error: error.message || "Server error while registering user" },
       { status: 500 }

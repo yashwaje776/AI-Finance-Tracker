@@ -10,6 +10,7 @@ import BudgetProgress from "./_components/budget-progress";
 import { useUser } from "@clerk/nextjs";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, setLoading, setError } from "@/store/features/userSlice";
+import toast from "react-hot-toast";
 
 export default function DashboardPage() {
   const dispatch = useDispatch();
@@ -45,12 +46,11 @@ export default function DashboardPage() {
           }
 
           const data = await res.json();
-          console.log(data);
           dispatch(setUser(data.data));
-          console.log("✅ User fetched/created:", data.data);
+          toast.success("User registered successfully");
         } catch (error) {
-          console.error("❌ Error registering user:", error);
           dispatch(setError(error.message));
+          toast.error("Failed to register user");
         } finally {
           dispatch(setLoading(false));
         }
@@ -83,8 +83,9 @@ export default function DashboardPage() {
         setAccounts(accData.data || []);
         setBudget(budData.data || null);
         setTransactions(transData.data || []);
-      } catch (error) {
-        console.error("Error loading dashboard:", error);
+        toast.success("Dashboard data loaded");
+      } catch {
+        toast.error("Error loading dashboard data");
       } finally {
         setLocalLoading(false);
       }
@@ -112,9 +113,9 @@ export default function DashboardPage() {
           isDefault: acc._id === accountId,
         }))
       );
-    } catch (error) {
-      console.error("Error updating default account:", error);
-      alert("Failed to set default account");
+      toast.success("Default account updated");
+    } catch {
+      toast.error("Failed to set default account");
     } finally {
       setUpdating(false);
     }
@@ -139,6 +140,7 @@ export default function DashboardPage() {
       );
     })
     .reduce((sum, t) => sum + t.amount, 0);
+
   return (
     <div className="space-y-8 p-4">
       <BudgetProgress

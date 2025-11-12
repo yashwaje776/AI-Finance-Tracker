@@ -24,6 +24,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { accountSchema } from "@/lib/schema/accountSchema";
 import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 
 export default function CreateAccountDrawer({ children }) {
   const [open, setOpen] = useState(false);
@@ -52,7 +53,7 @@ export default function CreateAccountDrawer({ children }) {
 
   const onSubmit = async (data) => {
     if (!userId) {
-      setResponseMsg("User not found. Please log in.");
+      toast.error("User not found. Please log in.");
       return;
     }
 
@@ -70,13 +71,11 @@ export default function CreateAccountDrawer({ children }) {
 
       if (!response.ok) throw new Error(result.error || "Something went wrong");
 
-      console.log("✅ Account Created:", result.account);
-      setResponseMsg(result.message || "Account created successfully!");
+      toast.success(result.message || "Account created successfully!");
       reset();
       setOpen(false);
     } catch (error) {
-      console.error("❌ Error creating account:", error);
-      setResponseMsg(error.message || "Failed to create account");
+      toast.error(error.message || "Failed to create account");
     } finally {
       setLoading(false);
     }

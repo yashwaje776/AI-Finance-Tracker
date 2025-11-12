@@ -42,14 +42,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-
-// 🆕 Tooltip Imports
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import toast from "react-hot-toast";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -189,9 +188,9 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
     const data = await res.json();
     if (res.ok) {
       setTransactions((prev) => prev.filter((t) => t._id !== id));
-      alert("Transaction deleted successfully!");
+      toast.success("Transaction deleted successfully!");
     } else {
-      alert(data.error || "Failed to delete transaction");
+      toast.error(data.error || "Failed to delete transaction");
     }
   };
 
@@ -213,9 +212,9 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
         prev.filter((t) => !selectedIds.includes(t._id))
       );
       setSelectedIds([]);
-      alert("Selected transactions deleted successfully!");
+      toast.success("Selected transactions deleted successfully!");
     } else {
-      alert(data.error || "Failed to delete selected transactions");
+      toast.error(data.error || "Failed to delete selected transactions");
     }
   };
 
@@ -232,7 +231,10 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setTransactions(initialTransactions)}
+          onClick={() => {
+            setTransactions(initialTransactions);
+            toast.success("Transaction list reset!");
+          }}
           className="flex items-center gap-2"
         >
           <RefreshCw className="h-4 w-4" />
@@ -240,7 +242,6 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
         </Button>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -303,7 +304,6 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
         </div>
       </div>
 
-      {/* Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -394,8 +394,6 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
                       {t.category}
                     </span>
                   </TableCell>
-
-                  {/* 🟢 Tooltip on Amount */}
                   <TableCell
                     className={cn(
                       "text-right font-medium cursor-pointer",
@@ -406,8 +404,9 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <span>
-                            {t.type === "EXPENSE" ? "-" : "+"}$
-                            {parseBalance(t.amount)}
+                            {t.type === "EXPENSE" ? "-" : "+"}₹{parseBalance(
+                              t.amount
+                            )}
                           </span>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -416,8 +415,6 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
                       </Tooltip>
                     </TooltipProvider>
                   </TableCell>
-
-                  {/* 🟣 Tooltip on Recurring Badge */}
                   <TableCell>
                     {t.isRecurring ? (
                       <TooltipProvider>
@@ -448,7 +445,6 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
                       </Badge>
                     )}
                   </TableCell>
-
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -481,7 +477,6 @@ export function TransactionTable({ transactions: initialTransactions = [] }) {
         </Table>
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
           <Button

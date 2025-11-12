@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export function AccountCard({ account, onDefaultChange }) {
   const { name, type, balance, isDefault } = account;
@@ -21,6 +22,15 @@ export function AccountCard({ account, onDefaultChange }) {
       ? parseFloat(balance.$numberDecimal)
       : Number(balance || 0);
 
+  const handleSwitchChange = (checked) => {
+    onDefaultChange();
+    if (checked) {
+      toast.success(`${name} set as default account`);
+    } else {
+      toast("Default account removed", { icon: "ℹ️" });
+    }
+  };
+
   return (
     <Card className="hover:shadow-md transition-shadow group relative">
       <Link href={`/account/${account._id}`} className="block">
@@ -28,7 +38,7 @@ export function AccountCard({ account, onDefaultChange }) {
           <CardTitle className="text-sm font-medium capitalize">
             {name}
           </CardTitle>
-          <Switch checked={isDefault} onCheckedChange={onDefaultChange} />
+          <Switch checked={isDefault} onCheckedChange={handleSwitchChange} />
         </CardHeader>
 
         <CardContent>

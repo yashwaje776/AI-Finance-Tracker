@@ -31,7 +31,6 @@ export async function GET(req, { params }) {
       data: transaction,
     });
   } catch (error) {
-    console.error("Error fetching transaction:", error);
     return NextResponse.json(
       { error: "Failed to fetch transaction" },
       { status: 500 }
@@ -132,7 +131,6 @@ export async function PATCH(req, { params }) {
       data: existingTransaction,
     });
   } catch (error) {
-    console.error("Error updating transaction:", error);
     return NextResponse.json(
       { error: "Failed to update transaction" },
       { status: 500 }
@@ -188,7 +186,6 @@ export async function DELETE(req, { params }) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error deleting transaction:", error);
     return NextResponse.json(
       { error: "Failed to delete transaction" },
       { status: 500 }

@@ -9,7 +9,6 @@ export async function DELETE(req) {
     await connectDB();
 
     const { ids } = await req.json();
-    console.log("Deleting transactions with IDs:", ids);
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       return NextResponse.json(
         { error: "Transaction IDs are required" },
@@ -65,7 +64,6 @@ export async function DELETE(req) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error deleting multiple transactions:", error);
     return NextResponse.json(
       { error: "Failed to delete multiple transactions" },
       { status: 500 }

@@ -1,33 +1,34 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, {use, useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
 import { Suspense } from "react";
 import { AccountChart } from "./_components/AccountChart";
-import { Button } from "@/components/ui/button";
 import { TransactionTable } from "./_components/TransactionTable";
+import toast from "react-hot-toast";
 
 export default function AccountPage({ params }) {
-  const { id } = use(params);
+  const { id } = use(params); 
 
   const [account, setAccount] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [creating, setCreating] = useState(false);
-
-  console.log("Account ID:", id);
 
   const fetchAccount = async () => {
     try {
       setLoading(true);
       const res = await fetch(`/api/account/${id}`, { cache: "no-store" });
       const result = await res.json();
-      console.log(result);
 
-      if (!res.ok) throw new Error(result.error || "Failed to load account");
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to load account");
+      }
+
       setAccount(result.data);
+      toast.success("Account loaded successfully!");
     } catch (err) {
       setError(err.message);
+      toast.error(`Error: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -46,8 +47,15 @@ export default function AccountPage({ params }) {
       ? parseFloat(account.balance.$numberDecimal)
       : Number(account?.balance || 0);
 
-  if (loading) return <div className="p-4">Loading account...</div>;
-  if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
+  if (loading)
+    return (
+      <div className="p-4">
+        <BarLoader width="100%" color="#9333ea" />
+      </div>
+    );
+
+  if (error)
+    return <div className="p-4 text-red-500">Error: {error}</div>;
 
   return (
     <div className="space-y-8 px-5">
@@ -57,8 +65,7 @@ export default function AccountPage({ params }) {
             {account.name}
           </h1>
           <p className="text-muted-foreground">
-            {account.type.charAt(0) + account.type.slice(1).toLowerCase()}{" "}
-            Account
+            {account.type.charAt(0) + account.type.slice(1).toLowerCase()} Account
           </p>
         </div>
 
@@ -79,7 +86,7 @@ export default function AccountPage({ params }) {
       </Suspense>
 
       <Suspense
-        fallback={<BarLoader className="mt-4" width={"100%"} color="#9333ea" />}
+        fallback={<BarLoader className="mt-4" width="100%" color="#9333ea" />}
       >
         <TransactionTable transactions={account.transactions} />
       </Suspense>

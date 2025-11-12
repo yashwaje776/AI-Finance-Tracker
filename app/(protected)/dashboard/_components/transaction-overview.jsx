@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { format } from "date-fns";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import toast from "react-hot-toast";
 
 import {
   Select,
@@ -97,7 +98,10 @@ export default function DashboardOverview({
           {accounts.length > 0 && (
             <Select
               value={selectedAccountId}
-              onValueChange={setSelectedAccountId}
+              onValueChange={(value) => {
+                setSelectedAccountId(value);
+                toast.success("Account switched successfully!");
+              }}
             >
               <SelectTrigger className="w-[160px]">
                 <SelectValue placeholder="Select account" />
@@ -120,7 +124,7 @@ export default function DashboardOverview({
                 No recent transactions
               </p>
             ) : (
-               recentTransactions.map((transaction) => (
+              recentTransactions.map((transaction) => (
                 <div
                   key={transaction.id}
                   className="flex items-center justify-between"
@@ -147,7 +151,7 @@ export default function DashboardOverview({
                       ) : (
                         <ArrowUpRight className="mr-1 h-4 w-4" />
                       )}
-                      ${transaction.amount.toFixed(2)}
+                      ₹{transaction.amount.toFixed(2)}
                     </div>
                   </div>
                 </div>

@@ -22,7 +22,6 @@ export async function GET(req) {
 
     return NextResponse.json({ success: true, data: transactions });
   } catch (error) {
-    console.error("Error fetching transactions:", error);
     return NextResponse.json(
       { success: false, message: "Failed to fetch transactions" },
       { status: 500 }

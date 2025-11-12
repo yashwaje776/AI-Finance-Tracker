@@ -18,6 +18,9 @@ import { Switch } from "@/components/ui/switch";
 import { useUser } from "@clerk/nextjs";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "@/store/features/userSlice";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 
 const transactionSchema = z.object({
   type: z.enum(["INCOME", "EXPENSE"], {
@@ -41,6 +44,8 @@ const transactionSchema = z.object({
 });
 
 export default function Page() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [transactions, setTransactions] = useState([]);
@@ -65,9 +70,8 @@ export default function Page() {
         if (!res.ok) throw new Error(data.error || "Failed to fetch user info");
 
         dispatch(setUser(data.data));
-        console.log("✅ User info loaded:", data.data);
       } catch (err) {
-        console.error("❌ Error fetching user info:", err);
+        toast.error("Failed to load user info");
       }
     };
 
@@ -90,6 +94,7 @@ export default function Page() {
     defaultValues: {
       isRecurring: false,
       status: "COMPLETED",
+      type: "EXPENSE",
     },
   });
 
@@ -117,22 +122,18 @@ export default function Page() {
       });
 
       const text = await res.text();
-      console.log("🔹 Raw API response:", text);
-
       if (!res.ok) throw new Error(`Server error: ${text}`);
 
       const data = JSON.parse(text);
-      console.log("✅ Parsed receipt data:", data);
       setValue("type", "EXPENSE");
       if (data.amount) setValue("amount", data.amount.toString());
       if (data.description) setValue("description", data.description);
       if (data.category) setValue("category", data.category);
       if (data.date) setValue("date", data.date);
 
-      alert("✅ Receipt scanned successfully! Fields auto-filled.");
+      toast.success("Receipt scanned successfully! Fields auto-filled.");
     } catch (err) {
-      console.error("❌ Error scanning receipt:", err);
-      alert("❌ Failed to scan receipt. Please try again.");
+      toast.error("Failed to scan receipt. Please try again.");
     } finally {
       setScanning(false);
     }
@@ -140,7 +141,7 @@ export default function Page() {
 
   const onSubmit = async (data) => {
     if (!userId) {
-      alert("⚠️ User not found. Please log in first.");
+      toast.error("User not found. Please log in first.");
       return;
     }
 
@@ -163,14 +164,14 @@ export default function Page() {
       const result = await res.json();
       if (!res.ok)
         throw new Error(result.error || "Failed to create transaction");
+        router.push("/dashboard")
 
       setTransactions((prev) => [...prev, result.data]);
       reset();
       setSelectedAccount(defaultAccount || null);
-      alert("✅ Transaction created successfully!");
+      toast.success("Transaction created successfully!");
     } catch (error) {
-      console.error(error);
-      alert("❌ " + error.message);
+      toast.error(error.message || "Failed to create transaction");
     } finally {
       setLoading(false);
     }
@@ -254,11 +255,11 @@ export default function Page() {
                 defaultValue="EXPENSE"
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Type" />
+                  <SelectValue placeholder="Select Transaction Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="INCOME">INCOME</SelectItem>
-                  <SelectItem value="EXPENSE">EXPENSE</SelectItem>
+                  <SelectItem value="INCOME">Income</SelectItem>
+                  <SelectItem value="EXPENSE">Expense</SelectItem>
                 </SelectContent>
               </Select>
               {errors.type && (
