@@ -3,7 +3,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,20 +19,20 @@ export const metadata = {
   title: "FinSight",
   description: "AI-powered finance tracker",
 };
-
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <ClerkProvider>
-
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header></Header>
-        <main className="min-h-screen grow">{children}</main>
-        <Footer></Footer>
-      </body>
-    </html>
+      <Providers>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <Header></Header>
+            <main className="min-h-screen grow">{children}</main>
+            <Footer></Footer>
+          </body>
+        </html>
+      </Providers>
     </ClerkProvider>
   );
 }
