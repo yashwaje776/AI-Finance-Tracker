@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 💰 Finsight AI — Smart Finance Tracker
 
-## Getting Started
+Finsight AI is an **AI-powered personal finance tracker** built with **Next.js**.  
+It helps you **manage budgets, track transactions, monitor accounts, and scan receipts** with AI assistance.  
+The app detects **recurring transactions**, sends **budget alerts**, and automatically generates **monthly reports**.  
 
-First, run the development server:
+Built with **Next.js**, **MongoDB**, **Inngest** (for automation), and **Clerk** (for secure authentication).
 
+---
+
+## 🌐 Live Demo
+
+🔗 **Live Site:** [https://finsight-ivory.vercel.app/](https://finsight-ivory.vercel.app/)  
+---
+
+## 🚀 Features
+
+### 💵 Financial Management
+- **Budget Tracking** – Create and monitor personal or shared budgets.
+- **Transaction Logging** – Record income and expenses with smart categorization.
+- **Account Management** – Manage multiple financial accounts (banks, wallets, etc.).
+- **Receipt Scanning (AI OCR)** – Upload or scan receipts; auto-extract details via OCR and AI.
+
+### 🔁 Automation
+- **Recurring Transaction Detection** – Automatically find repeating transactions and alert users.
+- **Monthly Budget Reports** – Automated reports via Inngest jobs.
+- **AI Spending Insights** – Personalized summaries and suggestions based on spending patterns.
+
+### 🔒 Authentication
+- **Clerk Integration** – Secure user authentication and session management.
+- Supports social logins (Google, Apple, GitHub).
+
+---
+
+## 🧠 Tech Stack
+
+| Layer | Technology |
+|-------|-------------|
+| **Frontend** | Next.js 15 (App Router) + React 19 |
+| **Styling** | Tailwind CSS + Shadcn UI |
+| **Backend** | Next.js API Routes + Inngest Functions |
+| **Database** | MongoDB (via Mongoose) |
+| **Authentication** | Clerk |
+| **Automation & Jobs** | Inngest |
+| **AI & OCR** | OpenAI API + Tesseract / OCR.space |
+| **Deployment** | Vercel |
+
+---
+## 📸 Screenshots
+
+### 🏠 Dashboard
+![Dashboard Screenshot](./public/screenshots/dashboard.png)
+
+### 📊 Reports
+![Reports Screenshot](./public/screenshots/reports.png)
+
+### 🧾 Receipt Scanner
+![Receipt Scanner Screenshot](./public/screenshots/receipt-scanner.png)
+
+
+## ⚙️ Getting Started
+
+### 1️⃣ Clone the Repository
 ```bash
+git clone https://github.com/yashwaje776/AI-Finance-Tracker/
+cd finsight
+
+Install Dependencies
+npm install
+
+Set Up Environment Variables
+
+Create a .env.local file in the root directory:
+
+Run the Development Server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Now open your browser and visit:
+👉 http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Inngest Workflows
+Workflow	Description	Schedule
+detectRecurringTransactions	Finds recurring expenses & notifies users	Daily
+sendMonthlyReport	Generates and emails monthly reports	Monthly
+budgetAlertTrigger	Alerts users when budgets are exceeded	On event
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
