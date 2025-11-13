@@ -28,7 +28,7 @@ Built with **Next.js**, **MongoDB**, **Inngest** (for automation), and **Clerk**
 
 ### 🔒 Authentication
 - **Clerk Integration** – Secure user authentication and session management.
-- Supports social logins (Google, Apple, GitHub).
+- Supports social logins (Google).
 
 ---
 
