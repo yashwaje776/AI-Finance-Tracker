@@ -49,12 +49,12 @@ Built with **Next.js**, **MongoDB**, **Inngest** (for automation), and **Clerk**
 ## 📸 Screenshots
 
 ### 🏠 Dashboard
-![Dashboard Screenshot](./public/dashboard.png.jpg)
+![Dashboard Screenshot](./public/dashboard.jpg)
 
 ### 📊 Reports
 ![Monthly Reports Screenshot](./public/monthly-report.jpg)
 
-### 🧾 Receipt Scanner
+### 🧾 account page
 ![account Screenshot](./public/account.jpg)
 
 
