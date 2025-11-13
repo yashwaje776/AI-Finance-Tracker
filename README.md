@@ -64,25 +64,25 @@ Built with **Next.js**, **MongoDB**, **Inngest** (for automation), and **Clerk**
 ```bash
 git clone https://github.com/yashwaje776/AI-Finance-Tracker/
 cd finsight
-
-Install Dependencies
+```
+### Install Dependencies
 npm install
 
-Set Up Environment Variables
-
+### Set Up Environment Variables
 Create a .env.local file in the root directory:
 
-Run the Development Server
+### Run the Development Server
 npm run dev
 
 
-Now open your browser and visit:
+### Now open your browser and visit:
 👉 http://localhost:3000
 
-Inngest Workflows
-Workflow	Description	Schedule
-detectRecurringTransactions	Finds recurring expenses & notifies users	Daily
-sendMonthlyReport	Generates and emails monthly reports	Monthly
-budgetAlertTrigger	Alerts users when budgets are exceeded	On event
+## 🪄 Inngest Workflows
 
+| 🧩 **Workflow** | 📝 **Description** | ⏰ **Schedule** |
+|-----------------|--------------------|----------------|
+| `detectRecurringTransactions` | Finds recurring expenses & notifies users | 🕐 Daily |
+| `sendMonthlyReport` | Generates and emails monthly reports | 📅 Monthly |
+| `budgetAlertTrigger` | Alerts users when budgets are exceeded | ⚡in 6 hour |
 
